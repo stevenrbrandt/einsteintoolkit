@@ -105,18 +105,18 @@ def error_state(lines):
     errorpat = re.compile(r"^(Aborting Simfactory|Error while syncing)")
     failedpat = re.compile(r"Command returned exit status [1-9]")
     submitpat = re.compile(r"^Warning: submit either failed or could not determine job id, output:");
-    makepat = re.compile(r"^make: .* Error")
+    makepat = re.compile(r"^make: .* (Error|Terminated)")
     for line in reversed(lines):
         if crashpat.search(line):
-            return True         # A crash (severe error)
+            return "[CRASH]"    # A crash (severe error)
         if errorpat.search(line):
-            return False        # A fatal error
+            return "[ERROR]"    # A fatal error
         if False and failedpat.search(line):
-            return False        # A subcommand failed
+            return "[SUBCOMMAND]"# A subcommand failed
         if submitpat.search(line):
-            return False        # Submit command failed
+            return "[SUBMIT]"   # Submit command failed
         if makepat.search(line):
-            return False        # Make failed
+            return "[MAKE]"     # Make failed
     return None                 # No error
 
 
@@ -174,7 +174,7 @@ while True:
         duration_str = age_string(duration)
         good_conf_str = ifthen(good_conf, " [conf]", "", "")
         good_sim_str  = ifthen(good_sim, " [success]", " [failure]", "")
-        error_str = ifthen(error, " [CRASH]", " [ERROR]", "")
+        error_str = error if error else ""
         done_str  = ifthen(done, " [done]", " [aborted]", " working...")
         state_str = "".join([good_conf_str, good_sim_str,
                              error_str, done_str])

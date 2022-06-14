@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2020-2021 Gabriele Bozzola
+# Copyright (C) 2020-2022 Gabriele Bozzola
 #
 # Inspired by code originally developed by Wolfgang Kastaun. This file may
 # contain algorithms and/or structures first implemented in
@@ -40,7 +40,8 @@ are found), which can be accessed with the methods
 :py:meth:`~.shape_at_iteration` and :py:meth:`~.shape_outline_at_iteration`.
 
 The module contains also functions to work with horizons:
-- :py:func:`~.compute_horizons_separation`, which takes
+
+* :py:func:`~.compute_horizons_separation`, which takes
   two :py:class:`~.OneHorizon` and returns the timeseries of their separation
 
 """
@@ -205,7 +206,7 @@ class OneHorizon:
                 warnings.warn(
                     "AH data not found, so it is impossible to convert"
                     " between iteration number to time.\nManually set"
-                    " shape_times or methods involving shape and time"
+                    " shape_times or the methods involving shape and time"
                     " will not work"
                 )
                 self.shape_times = None

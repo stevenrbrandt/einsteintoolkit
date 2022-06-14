@@ -8,6 +8,7 @@ cd @RUNDIR@-active
 
 module purge
 module load mvapich2
+module load gcc/9.3.0
 module list
 
 echo "Checking:"

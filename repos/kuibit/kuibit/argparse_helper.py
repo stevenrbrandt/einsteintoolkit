@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2020-2021 Gabriele Bozzola
+# Copyright (C) 2020-2022 Gabriele Bozzola
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -106,7 +106,7 @@ def add_grid_to_parser(parser, dimensions=2):
 
     - ``resolution``
     - ``x0 (origin)``
-    - ``x1 (corner)
+    - ``x1 (corner)``
     - ``axis`` (for ``dimension = 1``)
     - ``plane`` (for ``dimension = 2``)
 
@@ -308,8 +308,8 @@ def add_grid_structure_to_parser(parser, edge_color="black", alpha=0.5):
                   horizon.
     :type alpha: float
 
-    :param parser: Argparse parser (generated with init_argparse())
-    :type parser: configargparse.ArgumentParser
+    :param parser: Argparse parser (generated with ``init_argparse()``)
+    :type parser: ``configargparse.ArgumentParser``
 
     """
     ah_group = parser.add_argument_group("Grid structure options")

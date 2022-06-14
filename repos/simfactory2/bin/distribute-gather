@@ -9,7 +9,9 @@
 # 1. rewrite in python using simfactory's python classes the way distribute
 # does
 
-#set -x
+if [ x$VERBOSE = xyes ] ; then
+  set -x
+fi
 set -e
 shopt -s nullglob
 

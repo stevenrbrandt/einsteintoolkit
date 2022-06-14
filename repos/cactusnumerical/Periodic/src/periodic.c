@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "cctk.h"
+#include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 #include "Slab.h"
 

@@ -266,13 +266,10 @@ def main():
 
     errors = 0
     for m in machineList:
-        cmd = CompileCommand(m, rsyncInfo, pathList)
-        ret = simlib.ExecuteCommand(cmd)
-
-        # If we get a protocol error, try again with less modern rsync options
-        if ret == 512:
-            cmd = CompileCommand(m, rsyncInfo, pathList, True)
-            ret = simlib.ExecuteCommand(cmd)
+        modern_cmd = CompileCommand(m, rsyncInfo, pathList)
+        old_cmd = CompileCommand(m, rsyncInfo, pathList, True)
+        full_cmd = "{ %s } ; RSYNC_RC=$? ; if [ $RSYNC_RC -eq 2 ] ; then { %s } ; else $(exit $RSYNC_RC) ; fi" % (modern_cmd, old_cmd)
+        ret = simlib.ExecuteCommand(full_cmd)
 
         if ret != 0:
             errors = errors + 1

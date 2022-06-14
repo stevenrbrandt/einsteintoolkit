@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This runscript is used internally by simfactory as a template during the
 # sim setup and sim setup-silent commands

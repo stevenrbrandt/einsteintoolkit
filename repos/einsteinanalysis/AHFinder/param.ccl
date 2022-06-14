@@ -472,7 +472,7 @@ BOOLEAN ahf_mask_2 "Mask for third horizon with find3?"
 
 INT ahf_maskbuffer "Number of grid points in mask buffer zone" STEERABLE = ALWAYS
 {
-0 :: "Positive please"
+0:* :: "Positive please"
 } 5
 
 REAL ahf_maskshrink "Shrink factor for mask" STEERABLE = ALWAYS

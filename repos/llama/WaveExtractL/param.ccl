@@ -256,7 +256,7 @@ BOOLEAN cartoon "use cartoon"
 
 REAL cartoon_grid_acc "accuracy to use for dx=dy=dz check"
 {
-  0:: ""
+  0:* :: "any non-negative value"
 } 1e-2
 
 

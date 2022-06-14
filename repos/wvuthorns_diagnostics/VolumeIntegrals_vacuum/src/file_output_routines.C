@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "cctk.h"
+#include "cctk_Arguments.h"
 #include "cctk_IOMethods.h"
 #include "cctk_Parameters.h"
 #include "CactusBase/IOUtil/src/ioutil_Utils.h"

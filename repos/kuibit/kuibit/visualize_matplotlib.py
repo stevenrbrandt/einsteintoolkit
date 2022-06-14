@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2020-2021 Gabriele Bozzola
+# Copyright (C) 2020-2022 Gabriele Bozzola
 #
 # Inspired by code originally developed by Wolfgang Kastaun. This file may
 # contain algorithms and/or structures first implemented in
@@ -1202,6 +1202,12 @@ def _plot_horizon_on_plane(
     elif plot_type == "time":
         shape = horizon.shape_outline_at_time(
             time, cut[plane], tolerance=time_tolerance
+        )
+
+    if shape is None:
+        raise RuntimeError(
+            "No outline found on given plane. "
+            "This might be due to lack of shape interpolation"
         )
 
     return plot_horizon(

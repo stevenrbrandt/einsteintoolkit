@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2020-2021 Gabriele Bozzola
+# Copyright (C) 2020-2022 Gabriele Bozzola
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -303,6 +303,24 @@ class TestVisualizeMatplotlib(unittest.TestCase):
             )
         )
 
+        with self.assertRaises(RuntimeError):
+            # To trigger this error, we "move" the horizon up so that it does
+            # not intersect the equatorial plane. This is going to be surgical
+            # operation.
+
+            # This is some seriously ugly code!
+
+            # Moving all the coordinates by 10
+            # ah._patches[0] is at iteration 0
+            # ah._patches[0][0] is a dictionary with the various components
+            new_ah_patches00 = {
+                k: 10 + v for k, v in ah._patches[0][0].items()
+            }
+            new_ah_patches0 = (new_ah_patches00, ah._patches[0][1])
+            ah._patches[0] = new_ah_patches0
+
+            viz.plot_horizon_on_plane_at_time(ah, 0, "xy")
+
     def test_plot_components_boundaries(self):
 
         # Test invalid data
@@ -356,7 +374,7 @@ class TestVisualizeMatplotlib(unittest.TestCase):
         # Test with a 3D plot
         from mpl_toolkits.mplot3d import Axes3D  # noqa: F401, E402
 
-        ax = plt.figure().gca(projection="3d")
+        ax = plt.subplot(projection="3d")
         self.assertTrue(
             isinstance(
                 viz.add_text_to_corner("test", axis=ax),

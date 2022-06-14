@@ -36,5 +36,5 @@ EOF
     fi
 done
 
-echo "Couldn not find usable python executable. Looked for $SIMFACTORY_PYTHONEXECS."
+echo "Could not find usable python executable. Looked for $SIMFACTORY_PYTHONEXECS."
 exit 1

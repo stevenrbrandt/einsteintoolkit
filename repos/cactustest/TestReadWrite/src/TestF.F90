@@ -14,7 +14,7 @@ subroutine TestReadWrite_TestF_A(CCTK_ARGUMENTS)
   logical, save :: first_time = .true.
   integer :: vi
 
-  ! test that same function scheduled twice has different accessible variables
+  ! test that same function scheduled twice can have different accessible variables
   if(first_time) then
     Var3(1,1,1,1) = 46.
     Var2(1,1,1) = x(1,1,1)
@@ -195,14 +195,14 @@ subroutine TestReadWrite_TestF_C(CCTK_ARGUMENTS)
   end if
 end subroutine
 
-! this routine must never actually execute since it messes with its call signature and passes a CCTK_REAL array to TRIM
+! this routine must never actually execute since it messes with its call signature
 subroutine TestReadWrite_TestF_D(CCTK_ARGUMENTS)
 
   implicit none
 
   ! a horrible hack to trigger compile errors if READS variables are not
   ! intent(in)
-  ! the capitalizationg if "intent" matches the one prodced by rdwr.pl
+  ! the capitalizationg in "intent" matches the one prodced by rdwr.pl
   ! in the final replacement INTENT must not match any of the variants defined
   ! here
   ! using OPTIONAL for both READS only variables and unused variables means I
@@ -251,5 +251,5 @@ subroutine TestReadWrite_TestF_D(CCTK_ARGUMENTS)
     STOP
   end if
 
-  idx = INDEX(UnusedVar, "")
+  idx = UnusedVar%dummy
 end subroutine

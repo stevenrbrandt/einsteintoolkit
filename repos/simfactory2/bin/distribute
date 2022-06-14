@@ -122,19 +122,22 @@ print
 
 
 all_machines = [
-    "bethe",
-    "bluewaters",
-    "comet",
+    # "bethe", -- no longer able to compile ET
     "cori",
-    "mike",
-    "orca",
-    "philip",
+    "db1",
+    "expanse",
+    "golub",
+    "osx-homebrew",
+    "osx-macports",
     "qb",
-    "shelob",
+    "qbc",
+    #"shelob", -- cannot log in
+    "smic",
     "stampede2",
     "stampede2-skx",
-    "supermuc-ng",
-    "wheeler",
+    "summit",
+    #"supermuc-ng", -- no login, wait for Philipp
+#   "theta", # min no. of nodes is 128 other than debug queue, which allows only 1 job and only 1hr of runtime which is shorter than the testsuite
     ]
 
 machine_opts = {
@@ -333,10 +336,11 @@ def execute(command):
     info("Executing: %s" % " ".join(command))
     sys.stdout.flush()
     sys.stderr.flush()
-    subprocess.call(command, bufsize=1,
-                    stdin=None, stdout=sys.stdout, stderr=sys.stderr)
+    rc = subprocess.call(command, bufsize=1,
+                         stdin=None, stdout=sys.stdout, stderr=sys.stderr)
     sys.stdout.flush()
     sys.stderr.flush()
+    return rc
     
 def get_output(command):
     info("Calling: %s" % " ".join(command))
@@ -361,13 +365,13 @@ def authenticate(machine):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["execute", "true"]])
-    execute(command)
+    return execute(command)
 
 
 
 def authenticate_access(machine):
     info("Authenticating access to %s:" % machine)
-    authenticate(machine)
+    return authenticate(machine)
 
 
 
@@ -383,14 +387,22 @@ def wipe(machine):
                            ["execute",
                             "pwd | grep -q '/%s$' && rm -rf $PWD" % \
                             sourcesuffix]])
-        execute(command)
+        rc = execute(command)
+    else:
+        rc = 0
+    return rc
 
 
 def sync(machine):
     local_machine = get_local_machine()
     if local_machine != machine:
         command = flatten([[get_sim_script()], verbose_options, ["sync", machine]])
-        execute(command)
+        rc = execute(command)
+        if rc != 0:
+            log_result("sync failed")
+    else:
+        rc = 0
+    return rc
 
 
 
@@ -398,7 +410,7 @@ def list_configurations(machine):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["list-configurations"]])
-    execute(command)
+    return execute(command)
 
 
 
@@ -442,15 +454,20 @@ def build(machine, build_options):
                        build_options,
                        configuration_options.split(),
                        optionlists, submitscripts, runscripts, thornlists])
-    execute(command)
+    rc = execute(command)
     
-    status = get_configuration_status(machine, conf)
-    if status == 'S':
-        log_result("build %s succeeded" % conf)
-    elif status == 'F':
-        log_result("build %s failed" % conf)
+    if rc == 0:
+        status = get_configuration_status(machine, conf)
+        if status == 'S':
+            log_result("build %s succeeded" % conf)
+        elif status == 'F':
+            log_result("build %s failed" % conf)
+            rc = 1
+        else:
+            fatal("Cannot determine status of configuration %s" % conf)
     else:
-        fatal("Cannot determine status of configuration %s" % conf)
+        log_result("build %s failed" % conf)
+    return rc
 
 
 
@@ -458,7 +475,7 @@ def list_simulations(machine):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["list-simulations"]])
-    execute(command)
+    return execute(command)
 
 
 
@@ -467,7 +484,7 @@ def purge_simulation(machine, simulation):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["purge", simulation]])
-    execute(command)
+    return execute(command)
 
 
 def simulation_exists(machine, simulation):
@@ -489,7 +506,7 @@ def delete_simulation(machine, simulation):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["execute", "rm -rf '%s'" % simdir]])
-    execute(command)
+    return execute(command)
 
 
 def get_status(machine, simulation):
@@ -571,7 +588,7 @@ def run_testsuite(machine, procs, build_options):
                         "--procs=%d" % cores,
                         "--ppn-used=%d" % ppn_used,
                         "--num-threads=%d" % threads], config_opts])
-    execute(command)
+    rc = execute(command)
     
     time.sleep(sleep_time)
     status = get_status(machine, simulation)
@@ -636,7 +653,7 @@ def examine_testsuites(machine, name, opts, sims, procs):
                        get_remotes(machine),
                        ["execute",
                         " ".join(map(quote, subcommand))]])
-    execute(command)
+    return execute(command)
 
 
 
@@ -673,7 +690,10 @@ def run_benchmarks(machine, build_options):
     smts        = range(1, max_smt+1)
     # Memory per core
     node_memory = 1024*1024 * float(get_mdb_entry(machine, "memory"))
-    memory      = min(0.5 * 1024**3 * ppn, 0.5 * node_memory)
+    if node_memory:
+        memory      = min(0.5 * 1024**3 * ppn, 0.5 * node_memory)
+    else:
+        memory      = 0
     
     cycles_sec = float(get_mdb_entry(machine, "cpufreq")) * 1.0e+9
     flop_cycle = float(get_mdb_entry(machine, "flop/cycle"))
@@ -865,7 +885,7 @@ def create_submit(machine, build_options, parfile, walltime):
                         "--walltime=%s" % walltime,
                         "--procs=%d" % procs,
                         "--num-threads=%d" % num_threads]])
-    execute(command)
+    rc = execute(command)
     
     time.sleep(sleep_time)
     status = get_status(machine, simulation)
@@ -887,7 +907,7 @@ def submit(machine, simulation):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["submit", simulation]])
-    execute(command)
+    rc = execute(command)
     
     time.sleep(sleep_time)
     status = get_status(machine, simulation)
@@ -907,7 +927,7 @@ def presubmit(machine, simulation):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["submit", simulation]])
-    execute(command)
+    rc = execute(command)
     
     time.sleep(sleep_time)
     status = get_status(machine, simulation)
@@ -921,7 +941,7 @@ def show_output(machine, simulation):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["show-output", simulation]])
-    execute(command)
+    return execute(command)
 
 
 
@@ -1030,15 +1050,19 @@ def cleanup(machine, simulation):
     command = flatten([[get_sim_script()], verbose_options,
                        get_remotes(machine),
                        ["cleanup", simulation]])
-    execute(command)
+    rc = execute(command)
     # Ensure simulation is inactive
     status = get_status(machine, simulation)
     if status != 'I':
         fatal("Simulation %s is not inactive after cleanup" % simulation)
 
 def cleanup_all(machine, simulations):
+    rc = 0
     for sim in simulations:
-        cleanup(machine, sim)
+        rc1 = cleanup(machine, sim)
+        if rc1 != 0:
+            rc = rc1
+    return rc
 
 
 
@@ -1054,10 +1078,12 @@ def sync_build_submit(machine):
 
     if do_sync:
         info("Synchronising...")
-        sync(machine)
+        rc = sync(machine)
         # Give the file system some time to settle down
         time.sleep(3)
         info
+        if rc != 0:
+            return
     
     info("Current configurations:")
     list_configurations(machine)
@@ -1069,12 +1095,17 @@ def sync_build_submit(machine):
         confs += [("optimised", [])]
         if do_aligned:
             confs += [("aligned", [aligned_opt])]
+        rc = 0
         for (name,opts) in confs:
             info("Building %s configuration..." % name)
-            build(machine, build_options + opts)
+            rc1 = build(machine, build_options + opts)
+            if rc1 != 0:
+                rc = rc1
         info("Current configurations:")
         list_configurations(machine)
         info
+        if rc != 0:
+            return
     
     info("Current simulations:")
     list_simulations(machine)

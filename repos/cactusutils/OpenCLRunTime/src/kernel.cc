@@ -1,3 +1,6 @@
+#include "cctk.h"
+#include "cctk_Arguments.h"
+
 #include "kernel.hh"
 #include "copy.hh"
 

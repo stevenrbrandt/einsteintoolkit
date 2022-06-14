@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2020-2021 Gabriele Bozzola
+# Copyright (C) 2020-2022 Gabriele Bozzola
 #
 # Inspired by code originally developed by Wolfgang Kastaun. This file may
 # contain algorithms and/or structures first implemented in
@@ -562,9 +562,7 @@ class UniformGridData(BaseNumerical):
 
         # Here we substitute those elements that are outside with the point
         # (0, 0, 0, ...) (N zeros with 0 is num dimension)
-        indices_arr[outside_indices] = np.zeros(
-            self.num_dimensions, dtype=np.int
-        )
+        indices_arr[outside_indices] = np.zeros(self.num_dimensions, dtype=int)
 
         # See comment ~10 lines above for what this means
         take_indices = tuple(zip(*indices_arr))
@@ -1174,7 +1172,7 @@ class UniformGridData(BaseNumerical):
         # There can zero entries, we substitute them with -1, so that we
         # can identify them as negative numbers
         new_dx = np.array([dx if dx > 0 else -1 for dx in new_dx])
-        new_shape = ((self.x1 - self.x0) / new_dx + 1.5).astype(np.int64)
+        new_shape = ((self.x1 - self.x0) / new_dx + 1.5).astype(int)
         new_shape = np.array([s if s > 0 else 1 for s in new_shape])
 
         new_grid = UniformGrid(
@@ -1965,7 +1963,7 @@ class HierarchicalGridData(BaseNumerical):
         # available on each block
 
         finest_map = np.zeros(
-            np.array([len(x) - 1 for x in boundaries_tilde]), dtype=np.int32
+            np.array([len(x) - 1 for x in boundaries_tilde]), dtype=int
         )
 
         for component_index in range(len(boundary_origins_tilde) - 1, -1, -1):
@@ -2034,7 +2032,7 @@ class HierarchicalGridData(BaseNumerical):
 
         for comp in components:
             # We find the index corresponding to x0 and x1 of the component
-            index_x0 = ((comp.x0 - grid.x0) / grid.dx + 0.5).astype(np.int32)
+            index_x0 = ((comp.x0 - grid.x0) / grid.dx + 0.5).astype(int)
             index_x1 = index_x0 + comp.shape
             slicer = tuple(
                 slice(index_j0, index_j1)
@@ -2299,7 +2297,7 @@ class HierarchicalGridData(BaseNumerical):
         # We have multiple patches
         if len(self[self.num_coarsest_level]) != 1:
             raise ValueError(
-                "Data does not have a well defined x0 "
+                "Data does not have a well defined x0"
                 " (there are multiple patches)"
             )
         return self.first_component.x0
@@ -2712,7 +2710,7 @@ class HierarchicalGridData(BaseNumerical):
         # correspond. There can zero entries, we substitute them with -1, so
         # that we can identify them as negative numbers
         new_dx = np.array([dx if dx > 0 else -1 for dx in self.finest_dx])
-        new_shape = ((self.x1 - self.x0) / new_dx + 1.5).astype(np.int64)
+        new_shape = ((self.x1 - self.x0) / new_dx + 1.5).astype(int)
         new_shape = np.array([s if s > 0 else 1 for s in new_shape])
 
         return self.to_UniformGridData(
@@ -2751,7 +2749,7 @@ class HierarchicalGridData(BaseNumerical):
         :rtype: :py:class:`~.HierarchicalGridData`
 
         """
-        # We only know what how to combine HierarhicalGridData
+        # We only know what how to combine HierarchicalGridData
         if isinstance(other, type(self)):
             if self.shape != other.shape:
                 raise ValueError("Grid structure incompatible")

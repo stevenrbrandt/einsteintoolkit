@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Preparing:"
 set -x                          # Output commands

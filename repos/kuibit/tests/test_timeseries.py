@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2020-2021 Gabriele Bozzola
+# Copyright (C) 2020-2022 Gabriele Bozzola
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -1071,6 +1071,20 @@ class TestTimeseries(unittest.TestCase):
         new_ones.window("blackman")
         self.assertTrue(np.allclose(new_ones.y, black_array))
 
+        # Test window on not regularly sampled series
+        log_times = np.logspace(-2, -1, 10)
+        new_ones_log = ts.TimeSeries(log_times, np.ones_like(log_times))
+        with self.assertWarns(RuntimeWarning):
+            new_ones_log.window("blackman")
+
+        new_ones_log_resampled = ts.TimeSeries(
+            log_times, np.ones_like(log_times)
+        ).regular_resampled()
+        new_ones_log_resampled.window("blackman")
+
+        self.assertTrue(np.allclose(new_ones_log.t, new_ones_log_resampled.t))
+        self.assertTrue(np.allclose(new_ones_log.y, new_ones_log_resampled.y))
+
     def test_savgol_smooth(self):
 
         # Here I just test that I am correctly calling the filter
@@ -1142,6 +1156,9 @@ class TestTimeseries(unittest.TestCase):
         ts_mask.mask_remove()
 
         self.assertTrue(np.allclose(t[50:], ts_mask.y))
+
+        # When we remove a mask, the series should be non masked
+        self.assertFalse(ts_mask.is_masked())
 
     def test_mask_apply(self):
 

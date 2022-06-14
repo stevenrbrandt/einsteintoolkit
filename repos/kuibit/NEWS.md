@@ -1,5 +1,28 @@
 # Changelog
 
+## Version 1.3.4 (22 April 2022)
+
+#### General
+- Improvements to documentation and docstrings
+
+#### Bug fixes
+
+- Added error in `_plot_horizon_on_plane` when the horizon cannot be plotted
+- Updated NumPy types (np.int -> int, np.float -> float)
+- Windowing uneven signals is no longer allowed
+- Correctly remove ghost zones for 1-2D HDF5 files
+- Fix deprecation warning for Matplotlib 3.4
+- Fix `is_masked` after removing a mask (thanks @ekwessel,
+  [#28](https://github.com/Sbozzolo/kuibit/issues/28))
+- Fix some information not being propagated by
+  `grid_data_utils.merge_uniform_grids`.
+
+#### New examples
+
+Scripts:
+
+* `plot_ah_trajectories.py`
+
 ## Version 1.3.3 (19 November 2021)
 
 #### Bug fixes

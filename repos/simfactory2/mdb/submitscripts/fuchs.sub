@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #SBATCH --partition=parallel
 #SBATCH --constraint=dual
 #SBATCH --time=@WALLTIME@

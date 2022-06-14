@@ -446,7 +446,10 @@ void PUGH_RegisterCallFunc (int (* func) (void *function,
   }
   else
   {
-    memset (ghostsize, 0, maxdim);
+    for (i = 0; i < maxdim; i++)
+    {
+      ghostsize[i] = 0;
+    }
     switch (maxdim)
     {
       case 3: ghostsize[2] = ghost_size_z;

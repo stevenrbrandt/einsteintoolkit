@@ -5,6 +5,8 @@ use Carp;
 use Data::Dumper;
 use strict;
 
+my $ptr_prefix = "cctk_ptr_";
+
 my $sch_file = $ENV{CCTK_HOME}."/src/piraha/pegs/schedule.peg";
 my($S_grammar,$S_rule)=piraha::parse_peg_file($sch_file);
 
@@ -32,7 +34,7 @@ sub get_cap {
     my $hash = shift;
     my $th = shift;
     my $var = shift;
-    my $realvar = $var;;
+    my $realvar = $var;
     my $suffix = "";
     if($var =~ /(.*?)((_p)*)$/) {
         $realvar = $1;
@@ -110,6 +112,7 @@ sub do_interfaces
     my $dim = 3; # this is the default value
     my $size = undef;
     my $gname;
+    my $centering;
     my $gtype;
     my $cap_gname;
     for my $ch (@{$gr->{children}}) {
@@ -137,6 +140,11 @@ sub do_interfaces
         $dim = $ch->substring();
       } elsif($ch->is("size")) {
         $size = $ch;
+      } elsif($ch->is("centering")) {
+        $centering = "";
+        for my $ch2 (@{$ch->{children}}) {
+            $centering .= uc $ch2->substring();
+        }
       } elsif($ch->is("timelevels")) {
         $level = $ch->substring();
       }
@@ -154,6 +162,9 @@ sub do_interfaces
       $hash->{$gname}->{level} = 0;
     } else {
       $hash->{$gname}->{level} = $level-1;
+    }
+    if($centering) {
+        $hash->{$gname}->{centering} = $centering;
     }
     $hash->{$gname}->{vtype} = uc $vtype;
     $hash->{$gname}->{vector} = $vecval;
@@ -327,7 +338,7 @@ sub do_schedules
     for my $ch (@{$gr->{children}}) {
       if($ch->is("reads") or $ch->is("writes")) {
         my $is_writes = $ch->is("writes");
-        
+
         # Process variable names in this definition.
         my $i = 0;
         while($ch->has($i,"qrname")) {
@@ -397,6 +408,52 @@ sub do_schedules
 }
 
 #/*@@
+#  @routine do_centering
+#  @date    Thu Sep 30 17:10:22 UTC 2021
+#  @author  Steven R. Brandt
+#  @desc
+#           Generate CarpetX-specific declarations.
+#
+#           Example implementation:
+#
+#           #define CCTK_CENTERING_GRID \
+#               const GridDescBaseDevice grid(cctkGH)
+#           #define CCTK_CENTERING_LAYOUT(L,V) \
+#               constexpr array<int, dim> L ## _centered V; \
+#               const GF3D2layout L ## gf_layout(cctkGH, L ## _centered)
+#           #define CCTK_CENTERING_GF(C,L,N) \
+#               const GF3D2<C CCTK_REAL> N(L ## gf_layout, $ptr_prefix ## N )
+#
+#  @enddesc
+#@@*/
+sub do_centering
+{
+    my $data = shift;
+    my $nm_data = shift;
+    my $var_group = shift;
+    my $const = shift;
+    my $full_var = shift;
+    my $sub_nm = shift;
+
+    if(!defined($nm_data->{"grid"})) {
+      $$data .= "CCTK_CENTERING_GRID; \\\n";
+      $nm_data->{grid}=1;
+    }
+    my $indstr = $var_group->{centering};
+    $indstr = "VVV" if(not(defined($indstr)));
+    if(!defined($nm_data->{$indstr})) {
+        my $numstr = $indstr;
+        $numstr =~ s/C/1, /g;
+        $numstr =~ s/V/0, /g;
+        $numstr =~ s/, $//;
+        $numstr = "({".$numstr."})";
+        $$data .= "CCTK_CENTERING_LAYOUT($indstr,$numstr); \\\n";
+        $nm_data->{$indstr}=1;
+    }
+    $$data .= "CCTK_CENTERING_GF($const,$indstr,$full_var); \\\n";
+}
+
+#/*@@
 #  @routine create_macros
 #  @date    Mon Feb 24 16:10:38 EST 2020
 #  @author  Steven R. Brandt and Samuel D. Cupp
@@ -442,12 +499,19 @@ sub create_macros
     croak($namekey) unless($namekey =~ /_(F|C)$/);
 
     my $nm = substr($namekey,0,-2); # removing language suffix from function name
+    my $nm_data = {};
+    my $data2="";
     if(defined($reads_writes->{$namekey}->{$namekey}->{$namekey})) {
       # This generates macros for functions with no read/write declarations.
       if ($lang->{$namekey} eq "C") {
         $$data .= "#ifdef CCODE \n";
         $$data .= "#ifndef DECLARE_CCTK_ARGUMENTS_${nm} \n";
         $$data .= "#define DECLARE_CCTK_ARGUMENTS_${nm} \\\n";
+        $$data .= "  _DECLARE_CCTK_ARGUMENTS; \\\n";
+        $$data .= "  /* end $nm */\n";
+        $$data .= "#endif\n";
+        $$data .= "#ifndef DECLARE_CCTK_ARGUMENTSX_${nm} \n";
+        $$data .= "#define DECLARE_CCTK_ARGUMENTSX_${nm} \\\n";
         $$data .= "  _DECLARE_CCTK_ARGUMENTS; \\\n";
         $$data .= "  /* end $nm */\n";
         $$data .= "#endif\n";
@@ -458,6 +522,9 @@ sub create_macros
         $$data .= "#define DECLARE_CCTK_ARGUMENTS_\U${nm}\E DECLARE_CCTK_ARGUMENTS_${nm}\n";
         $$data .= "#define DECLARE_CCTK_ARGUMENTS_${nm} \\\n";
         $$data .= "  _DECLARE_CCTK_FARGUMENTS; \\\n";
+        $$data .= " type cctki_inaccessible_grid_variable /* dummy-rdwr-type */ && \\\n";
+        $$data .= "  integer :: dummy && \\\n";
+        $$data .= " end type && \\\n";
         for my $var (@$all_cctk_arguments) {
           if(not defined($cctk_arguments{$var})) {
               # In Fortran, all GF's are passed in regardless of
@@ -467,7 +534,7 @@ sub create_macros
               # be converted into an int or float. The unsual
               # capitalization makes it easier to identify in
               # generated files.
-              $$data .= " characTer*8, intent(IN) :: $var /* dummy-rdwr-var */ && \\\n";
+              $$data .= " type(cctki_inaccessible_grid_variable), intent(IN) :: $var /* dummy-rdwr-var */ && \\\n";
           }
         }
         $$data .= "  /* end $nm */\n";
@@ -481,9 +548,15 @@ sub create_macros
     } else {
       if($lang->{$namekey} eq "C") {
         $$data .= "#ifdef CCODE \n";
+
         $$data .= "#ifndef DECLARE_CCTK_ARGUMENTS_${nm} \n";
         $$data .= "#define DECLARE_CCTK_ARGUMENTS_${nm} \\\n";
+
+        $data2 .= "#ifndef DECLARE_CCTK_ARGUMENTSX_${nm} \n";
+        $data2 .= "#define DECLARE_CCTK_ARGUMENTSX_${nm} \\\n";
+
         $$data .= "  _DECLARE_CCTK_ARGUMENTS; \\\n";
+        $data2 .= "  _DECLARE_CCTK_ARGUMENTS; \\\n";
         for my $th (sort keys %{$reads_writes->{$namekey}}) {
           for my $full_var (sort keys %{$reads_writes->{$namekey}->{$th}}) {
             my $errline = $reads_writes->{$namekey}->{$th}->{$full_var}->{line};
@@ -578,7 +651,11 @@ sub create_macros
                   &CST_error(0, "No access to variable '${th}::$ifull_var'"
                     ,$hint, $line, $ccl_file);
                 }
-                $$data .= qq($vtype $const * restrict const $ifull_var __attribute__((__unused__)) = (($vtype *) CCTKi_VarDataPtrI(cctkGH, $timelevel, CCTK_JOIN_TOKENS(cctki_vi_, CCTK_THORN).$ivar));; /* group $group_register */\\\n);
+                $$data .= qq($vtype $const * restrict const $ifull_var __attribute__((__unused__)) = (($vtype *) CCTKi_VarDataPtrI(cctkGH, $timelevel, CCTK_JOIN_TOKENS(cctki_vi_, CCTK_THORN).$ivar)); /* group $group_register */\\\n);
+                my $ifull_var2 = $ptr_prefix.$ifull_var;
+                $data2 .= qq($vtype $const * restrict const $ifull_var2 __attribute__((__unused__)) = (($vtype *) CCTKi_VarDataPtrI(cctkGH, $timelevel, CCTK_JOIN_TOKENS(cctki_vi_, CCTK_THORN).$ivar)); /* group $group_register */\\\n);
+
+                do_centering(\$data2, $nm_data, $var_group, $const, $ifull_var, "${th}::${nm}");
               }
             } else {
               my $vname = "${th}::$var";
@@ -593,10 +670,21 @@ sub create_macros
                 &CST_error(0, "No access to variable '${th}::$ifull_var'"
                   ,$hint, $line, $ccl_file);
               }
-              $$data .= qq($vtype $const * restrict const $ifull_var __attribute__((__unused__)) = (($vtype *) CCTKi_VarDataPtrI(cctkGH, $timelevel, CCTK_JOIN_TOKENS(cctki_vi_, CCTK_THORN).$ivar));; /* TL: $namekey --> $timelevel $group_register*/\\\n);
+              $$data .= qq($vtype $const * restrict const $ifull_var __attribute__((__unused__)) = (($vtype *) CCTKi_VarDataPtrI(cctkGH, $timelevel, CCTK_JOIN_TOKENS(cctki_vi_, CCTK_THORN).$ivar)); /* TL: $namekey --> $timelevel $group_register*/\\\n);
+              my $ifull_var2 = $ptr_prefix.$ifull_var;
+              $data2 .= qq($vtype $const * restrict const $ifull_var2 __attribute__((__unused__)) = (($vtype *) CCTKi_VarDataPtrI(cctkGH, $timelevel, CCTK_JOIN_TOKENS(cctki_vi_, CCTK_THORN).$ivar)); /* TL: $namekey --> $timelevel $group_register*/\\\n);
+
+              do_centering(\$data2, $nm_data, $var_group, $const, $ifull_var, "${th}::${nm}");
             }
           } # loop over read/write variables
         } # loop over read/write thorns
+        $data2 .= "  /* end $nm */\n";
+        $data2 .= "#endif\n";
+
+        $$data .= "  /* end $nm */\n";
+        $$data .= "#endif\n";
+        $$data .= $data2;
+        $$data .= "#endif\n";
       } elsif($lang->{$namekey} eq "FORTRAN") {
         my $vector_len = {};
         $$data .= "#ifdef FCODE \n";
@@ -604,6 +692,9 @@ sub create_macros
         $$data .= "#define DECLARE_CCTK_ARGUMENTS_\U${nm}\E DECLARE_CCTK_ARGUMENTS_${nm}\n";
         $$data .= "#define DECLARE_CCTK_ARGUMENTS_${nm} \\\n";
         $$data .= "  _DECLARE_CCTK_FARGUMENTS \\\n";
+        $$data .= " type cctki_inaccessible_grid_variable /* dummy-rdwr-type */ && \\\n";
+        $$data .= "  integer :: dummy && \\\n";
+        $$data .= " end type && \\\n";
         for my $th (sort keys %{$reads_writes->{$namekey}}) {
           for my $full_var (sort keys %{$reads_writes->{$namekey}->{$th}}) {
             my $var_group;
@@ -736,17 +827,18 @@ sub create_macros
         # Declare the variables that got missed...
         for my $var (@$all_cctk_arguments) {
           if(not defined($cctk_arguments{$var})) {
-              $$data .= " characTer*8, intent(IN) :: $var /* dummy-rdwr-var */ && \\\n";
-              $$data .= " integer, parameter :: cctki_use_$var = kind($var) &&\\\n";
+              $$data .= " type(cctki_inaccessible_grid_variable), intent(IN) :: $var /* dummy-rdwr-var */ && \\\n";
+              $$data .= " integer, parameter :: cctki_use_$var = kind($var%dummy) &&\\\n";
           }
         }
+
+        $$data .= "  /* end $nm */\n";
+        $$data .= "#endif\n";
+        $$data .= "#endif\n";
       } else {
         &CST_error(0, "Failed to match the language for the function $nm."
             ,"", __LINE__, __FILE__);
       }
-      $$data .= "  /* end $nm */\n";
-      $$data .= "#endif\n";
-      $$data .= "#endif\n";
     } # if logic for empty/non-empty macros
   } #loop over functions
   $$data .= "#endif";

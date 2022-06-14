@@ -217,24 +217,24 @@ static void CT_Analytic_Lump_Calc_Body(const cGH* restrict const cctkGH, const i
       phasez));
     
     CCTK_REAL d2solnXx CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
-      vecA,2)))*pow(yL,2)*pow(sigma,-4) - exp(-0.5*pow(sigma,-2)*(pow(yL,2) + 
-      pow(zL,2) + pow(xL + vecA,2)))*pow(yL,2)*pow(sigma,-4) - 
-      exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) 
-      + pow(xL + vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
-      vecA,2)))*pow(zL,2)*pow(sigma,-4) - exp(-0.5*pow(sigma,-2)*(pow(yL,2) + 
-      pow(zL,2) + pow(xL + vecA,2)))*pow(zL,2)*pow(sigma,-4) - 
-      exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) 
-      + pow(xL + vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(-(exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
-      vecA,2)))*pow(sigma,-2)) + exp(-0.5*pow(sigma,-2)*(pow(yL,2) + 
-      pow(zL,2) + pow(xL + vecA,2)))*pow(sigma,-2) + 
-      exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
+      vecA,2)))*pow(yL,2)*pow(sigma,-4) - exp(0.5*pow(sigma,-2)*(-pow(yL,2) - 
+      pow(zL,2) - pow(xL + vecA,2)))*pow(yL,2)*pow(sigma,-4) - 
+      exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) 
+      - pow(xL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
+      vecA,2)))*pow(zL,2)*pow(sigma,-4) - exp(0.5*pow(sigma,-2)*(-pow(yL,2) - 
+      pow(zL,2) - pow(xL + vecA,2)))*pow(zL,2)*pow(sigma,-4) - 
+      exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) 
+      - pow(xL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(-(exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
+      vecA,2)))*pow(sigma,-2)) + exp(0.5*pow(sigma,-2)*(-pow(yL,2) - 
+      pow(zL,2) - pow(xL + vecA,2)))*pow(sigma,-2) + 
+      exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
       vecA,2)))*pow(sigma,-4)*pow(xL - vecA,2) - 
-      exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-4)*pow(xL + vecA,2)) - 
       39.47841760435743447533796399950460454125*ampV*pow(kx,2)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz) 
       - 
@@ -243,24 +243,24 @@ static void CT_Analytic_Lump_Calc_Body(const cGH* restrict const cctkGH, const i
       39.47841760435743447533796399950460454125*ampV*pow(kz,2)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz);
     
     CCTK_REAL d2solnXy CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
-      vecA,2)))*pow(xL,2)*pow(sigma,-4) - exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(zL,2) + pow(yL + vecA,2)))*pow(xL,2)*pow(sigma,-4) - 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) 
-      + pow(yL + vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
-      vecA,2)))*pow(zL,2)*pow(sigma,-4) - exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(zL,2) + pow(yL + vecA,2)))*pow(zL,2)*pow(sigma,-4) - 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) 
-      + pow(yL + vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(-(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
-      vecA,2)))*pow(sigma,-2)) + exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(zL,2) + pow(yL + vecA,2)))*pow(sigma,-2) + 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
+      vecA,2)))*pow(xL,2)*pow(sigma,-4) - exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(zL,2) - pow(yL + vecA,2)))*pow(xL,2)*pow(sigma,-4) - 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) 
+      - pow(yL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
+      vecA,2)))*pow(zL,2)*pow(sigma,-4) - exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(zL,2) - pow(yL + vecA,2)))*pow(zL,2)*pow(sigma,-4) - 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) 
+      - pow(yL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(-(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
+      vecA,2)))*pow(sigma,-2)) + exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(zL,2) - pow(yL + vecA,2)))*pow(sigma,-2) + 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
       vecA,2)))*pow(sigma,-4)*pow(yL - vecA,2) - 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))*pow(sigma,-4)*pow(yL + vecA,2)) - 
       39.47841760435743447533796399950460454125*ampV*pow(kx,2)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz) 
       - 
@@ -269,24 +269,24 @@ static void CT_Analytic_Lump_Calc_Body(const cGH* restrict const cctkGH, const i
       39.47841760435743447533796399950460454125*ampV*pow(kz,2)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz);
     
     CCTK_REAL d2solnXz CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2)))*pow(xL,2)*pow(sigma,-4) - exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(yL,2) + pow(zL + vecA,2)))*pow(xL,2)*pow(sigma,-4) - 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) 
-      + pow(zL + vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2)))*pow(yL,2)*pow(sigma,-4) - exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(yL,2) + pow(zL + vecA,2)))*pow(yL,2)*pow(sigma,-4) - 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) 
-      + pow(zL + vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(-(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2)))*pow(sigma,-2)) + exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(yL,2) + pow(zL + vecA,2)))*pow(sigma,-2) + 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2)))*pow(xL,2)*pow(sigma,-4) - exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(yL,2) - pow(zL + vecA,2)))*pow(xL,2)*pow(sigma,-4) - 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) 
+      - pow(zL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2)))*pow(yL,2)*pow(sigma,-4) - exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(yL,2) - pow(zL + vecA,2)))*pow(yL,2)*pow(sigma,-4) - 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) 
+      - pow(zL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(-(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2)))*pow(sigma,-2)) + exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(yL,2) - pow(zL + vecA,2)))*pow(sigma,-2) + 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
       vecA,2)))*pow(sigma,-4)*pow(zL - vecA,2) - 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
       vecA,2)))*pow(sigma,-4)*pow(zL + vecA,2)) - 
       39.47841760435743447533796399950460454125*ampV*pow(kx,2)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz) 
       - 
@@ -349,99 +349,99 @@ static void CT_Analytic_Lump_Calc_Body(const cGH* restrict const cctkGH, const i
       -0.0833333333333333333333333333333*pow(Kc,2);
     
     CCTK_REAL testc1L CCTK_ATTRIBUTE_UNUSED = -d2soln - 
-      0.125*(2*pow(ampVG*(-(zL*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) 
-      + pow(yL - vecA,2)))*pow(sigma,-2)) + 
-      zL*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      0.125*(2*pow(ampVG*(-(zL*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) 
+      - pow(yL - vecA,2)))*pow(sigma,-2)) + 
+      zL*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(-(yL*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2)))*pow(sigma,-2)) + yL*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(yL,2) + pow(zL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(-(yL*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2)))*pow(sigma,-2)) + yL*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(yL,2) - pow(zL + vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*kz*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky) 
       + 
       6.283185307179586476925286766559005768394*ampV*ky*cos(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*zL*kz),2) 
-      + 2*pow(ampVG*(-(zL*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + 
+      + 2*pow(ampVG*(-(zL*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - 
       pow(xL - vecA,2)))*pow(sigma,-2)) + 
-      zL*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      zL*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(-(xL*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2)))*pow(sigma,-2)) + xL*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(yL,2) + pow(zL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(-(xL*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2)))*pow(sigma,-2)) + xL*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(yL,2) - pow(zL + vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*kz*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky) 
       + 
       6.283185307179586476925286766559005768394*ampV*kx*cos(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz),2) 
-      + 2*pow(ampVG*(-(yL*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + 
+      + 2*pow(ampVG*(-(yL*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - 
       pow(xL - vecA,2)))*pow(sigma,-2)) + 
-      yL*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      yL*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-2)) + 
-      ampVG*(-(xL*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
-      vecA,2)))*pow(sigma,-2)) + xL*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(zL,2) + pow(yL + vecA,2)))*pow(sigma,-2)) + 
+      ampVG*(-(xL*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
+      vecA,2)))*pow(sigma,-2)) + xL*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(zL,2) - pow(yL + vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*ky*cos(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*zL*kz) 
       + 
       6.283185307179586476925286766559005768394*ampV*kx*cos(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz),2) 
-      + pow(2*(ampVG*(-((zL - vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(yL,2) + pow(zL - vecA,2)))*pow(sigma,-2)) + (zL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
+      + pow(2*(ampVG*(-((zL - vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(yL,2) - pow(zL - vecA,2)))*pow(sigma,-2)) + (zL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
       vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*kz*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)) 
       - 0.666666666666666666666666666667*(ampVG*(-((xL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
       vecA,2)))*pow(sigma,-2)) + (xL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-2)) + ampVG*(-((yL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
       vecA,2)))*pow(sigma,-2)) + (yL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))*pow(sigma,-2)) + ampVG*(-((zL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
       vecA,2)))*pow(sigma,-2)) + (zL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
       vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*kz*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky) 
       + 
       6.283185307179586476925286766559005768394*ampV*ky*cos(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*zL*kz) 
       + 
       6.283185307179586476925286766559005768394*ampV*kx*cos(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz)),2) 
-      + pow(2*(ampVG*(-((yL - vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(zL,2) + pow(yL - vecA,2)))*pow(sigma,-2)) + (yL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      + pow(2*(ampVG*(-((yL - vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(zL,2) - pow(yL - vecA,2)))*pow(sigma,-2)) + (yL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*ky*cos(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*zL*kz)) 
       - 0.666666666666666666666666666667*(ampVG*(-((xL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
       vecA,2)))*pow(sigma,-2)) + (xL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-2)) + ampVG*(-((yL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
       vecA,2)))*pow(sigma,-2)) + (yL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))*pow(sigma,-2)) + ampVG*(-((zL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
       vecA,2)))*pow(sigma,-2)) + (zL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
       vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*kz*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky) 
       + 
       6.283185307179586476925286766559005768394*ampV*ky*cos(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*zL*kz) 
       + 
       6.283185307179586476925286766559005768394*ampV*kx*cos(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz)),2) 
-      + pow(2*(ampVG*(-((xL - vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + 
-      pow(zL,2) + pow(xL - vecA,2)))*pow(sigma,-2)) + (xL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      + pow(2*(ampVG*(-((xL - vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - 
+      pow(zL,2) - pow(xL - vecA,2)))*pow(sigma,-2)) + (xL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*kx*cos(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz)) 
       - 0.666666666666666666666666666667*(ampVG*(-((xL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
       vecA,2)))*pow(sigma,-2)) + (xL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-2)) + ampVG*(-((yL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
       vecA,2)))*pow(sigma,-2)) + (yL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))*pow(sigma,-2)) + ampVG*(-((zL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
       vecA,2)))*pow(sigma,-2)) + (zL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
       vecA,2)))*pow(sigma,-2)) + 
       6.283185307179586476925286766559005768394*ampV*kz*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky) 
       + 
@@ -489,19 +489,19 @@ static void CT_Analytic_Lump_Calc_Body(const cGH* restrict const cctkGH, const i
     
     CCTK_REAL testc2L CCTK_ATTRIBUTE_UNUSED = -d2solnXx + 
       0.333333333333333333333333333333*(-(ampVG*(xL*(yL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
       vecA,2)))*pow(sigma,-4) - xL*(yL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))*pow(sigma,-4))) - ampVG*(xL*(zL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
       vecA,2)))*pow(sigma,-4) - xL*(zL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
-      vecA,2)))*pow(sigma,-4)) - ampVG*(-(exp(-0.5*pow(sigma,-2)*(pow(yL,2) + 
-      pow(zL,2) + pow(xL - vecA,2)))*pow(sigma,-2)) + 
-      exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) 
-      + pow(xL - vecA,2)))*pow(sigma,-4)*pow(xL - vecA,2) - 
-      exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
+      vecA,2)))*pow(sigma,-4)) - ampVG*(-(exp(0.5*pow(sigma,-2)*(-pow(yL,2) - 
+      pow(zL,2) - pow(xL - vecA,2)))*pow(sigma,-2)) + 
+      exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) 
+      - pow(xL - vecA,2)))*pow(sigma,-4)*pow(xL - vecA,2) - 
+      exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-4)*pow(xL + vecA,2)) - 
       39.47841760435743447533796399950460454125*ampV*kx*kz*cos(6.283185307179586476925286766559005768394*xL*kx)*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*yL*ky) 
       - 
@@ -511,19 +511,19 @@ static void CT_Analytic_Lump_Calc_Body(const cGH* restrict const cctkGH, const i
     
     CCTK_REAL testc3L CCTK_ATTRIBUTE_UNUSED = -d2solnXy + 
       0.333333333333333333333333333333*(-(ampVG*(yL*(xL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
       vecA,2)))*pow(sigma,-4) - yL*(xL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-4))) - ampVG*(yL*(zL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
       vecA,2)))*pow(sigma,-4) - yL*(zL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
-      vecA,2)))*pow(sigma,-4)) - ampVG*(-(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(zL,2) + pow(yL - vecA,2)))*pow(sigma,-2)) + 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) 
-      + pow(yL - vecA,2)))*pow(sigma,-4)*pow(yL - vecA,2) - 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
+      vecA,2)))*pow(sigma,-4)) - ampVG*(-(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(zL,2) - pow(yL - vecA,2)))*pow(sigma,-2)) + 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) 
+      - pow(yL - vecA,2)))*pow(sigma,-4)*pow(yL - vecA,2) - 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))*pow(sigma,-4)*pow(yL + vecA,2)) - 
       39.47841760435743447533796399950460454125*ampV*ky*kz*cos(6.283185307179586476925286766559005768394*yL*ky)*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*xL*kx) 
       - 
@@ -533,19 +533,19 @@ static void CT_Analytic_Lump_Calc_Body(const cGH* restrict const cctkGH, const i
     
     CCTK_REAL testc4L CCTK_ATTRIBUTE_UNUSED = -d2solnXz + 
       0.333333333333333333333333333333*(-(ampVG*(zL*(xL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
       vecA,2)))*pow(sigma,-4) - zL*(xL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))*pow(sigma,-4))) - ampVG*(zL*(yL - 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
       vecA,2)))*pow(sigma,-4) - zL*(yL + 
-      vecA)*exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
-      vecA,2)))*pow(sigma,-4)) - ampVG*(-(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + 
-      pow(yL,2) + pow(zL - vecA,2)))*pow(sigma,-2)) + 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
-      vecA,2)))*pow(sigma,-2) + exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) 
-      + pow(zL - vecA,2)))*pow(sigma,-4)*pow(zL - vecA,2) - 
-      exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
+      vecA)*exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
+      vecA,2)))*pow(sigma,-4)) - ampVG*(-(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - 
+      pow(yL,2) - pow(zL - vecA,2)))*pow(sigma,-2)) + 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
+      vecA,2)))*pow(sigma,-2) + exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) 
+      - pow(zL - vecA,2)))*pow(sigma,-4)*pow(zL - vecA,2) - 
+      exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
       vecA,2)))*pow(sigma,-4)*pow(zL + vecA,2)) - 
       39.47841760435743447533796399950460454125*ampV*ky*kz*cos(6.283185307179586476925286766559005768394*yL*ky)*cos(6.283185307179586476925286766559005768394*zL*kz)*sin(6.283185307179586476925286766559005768394*xL*kx) 
       - 
@@ -554,20 +554,20 @@ static void CT_Analytic_Lump_Calc_Body(const cGH* restrict const cctkGH, const i
       39.47841760435743447533796399950460454125*ampV*pow(kz,2)*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz));
     
     CCTK_REAL testXxL CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
-      vecA,2))) - exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
+      vecA,2))) - exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))) + 
       ampV*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz);
     
     CCTK_REAL testXyL CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
-      vecA,2))) - exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
+      vecA,2))) - exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))) + 
       ampV*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz);
     
     CCTK_REAL testXzL CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2))) - exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2))) - exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
       vecA,2)))) + 
       ampV*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz);
     

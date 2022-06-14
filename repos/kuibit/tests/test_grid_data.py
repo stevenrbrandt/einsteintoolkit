@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2020-2021 Gabriele Bozzola
+# Copyright (C) 2020-2022 Gabriele Bozzola
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -1548,7 +1548,7 @@ class TestHierarchicalGridData(unittest.TestCase):
         self.assertEqual(hg.num_coarsest_level, 0)
 
         # dtype
-        self.assertEqual(hg.dtype, np.float)
+        self.assertEqual(hg.dtype, float)
 
         # x0, x1
         self.assertCountEqual(hg.x0, self.expected_data.x0)

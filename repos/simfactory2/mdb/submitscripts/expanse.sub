@@ -3,7 +3,7 @@
 #SBATCH --account=@ALLOCATION@
 #SBATCH --partition=@QUEUE@
 #SBATCH --nodes=@NODES@
-#SBATCH --mem=248GB
+#SBATCH --mem=249325M
 #SBATCH --ntasks-per-node=@NODE_PROCS@
 #SBATCH --cpus-per-task=@NUM_THREADS@
 #SBATCH --export=ALL

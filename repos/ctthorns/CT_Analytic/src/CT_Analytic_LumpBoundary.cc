@@ -145,20 +145,20 @@ static void CT_Analytic_LumpBoundary_Body(const cGH* restrict const cctkGH, cons
       phasez));
     
     CCTK_REAL testinixxL CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL - 
-      vecA,2))) - exp(-0.5*pow(sigma,-2)*(pow(yL,2) + pow(zL,2) + pow(xL + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL - 
+      vecA,2))) - exp(0.5*pow(sigma,-2)*(-pow(yL,2) - pow(zL,2) - pow(xL + 
       vecA,2)))) + 
       ampV*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz);
     
     CCTK_REAL testinixyL CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL - 
-      vecA,2))) - exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(zL,2) + pow(yL + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL - 
+      vecA,2))) - exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(zL,2) - pow(yL + 
       vecA,2)))) + 
       ampV*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz);
     
     CCTK_REAL testinixzL CCTK_ATTRIBUTE_UNUSED = 
-      ampVG*(exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL - 
-      vecA,2))) - exp(-0.5*pow(sigma,-2)*(pow(xL,2) + pow(yL,2) + pow(zL + 
+      ampVG*(exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL - 
+      vecA,2))) - exp(0.5*pow(sigma,-2)*(-pow(xL,2) - pow(yL,2) - pow(zL + 
       vecA,2)))) + 
       ampV*sin(6.283185307179586476925286766559005768394*xL*kx)*sin(6.283185307179586476925286766559005768394*yL*ky)*sin(6.283185307179586476925286766559005768394*zL*kz);
     /* Copy local copies back to grid functions */

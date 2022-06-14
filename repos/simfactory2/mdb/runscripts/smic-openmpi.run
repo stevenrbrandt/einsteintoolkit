@@ -17,18 +17,17 @@ export GMON_OUT_PREFIX=gmon.out
 export OMP_NUM_THREADS=@NUM_THREADS@
 export CACTUS_NUM_PROCS=@NUM_PROCS@
 export CACTUS_NUM_THREADS=@NUM_THREADS@
-export MPICHDIR=/usr/local/packages/openmpi/1.8.4/INTEL-14.0.2
+export MPICHDIR=/usr/local/packages/openmpi/3.1.5/tr7ckfes
 export MPD_NODEFILE=mpd_nodefile
 export MV2_SRQ_SIZE=4000        # ???
-export LD_LIBRARY_PATH=/usr/local/compilers/Intel/parallel_studio_xe_2015//composer_xe_2015.0.090/compiler/lib/intel64:/usr/local/compilers/Intel/parallel_studio_xe_2015/composer_xe_2015.0.090/mkl/lib/intel64:${LD_LIBRARY_PATH}
-#export MV2_USE_RING_STARTUP=0
+export LD_LIBRARY_PATH=/usr/local/compilers/Intel/parallel_studio_xe_2019.5/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64_lin:/usr/local/compilers/Intel/parallel_studio_xe_2019.5/compilers_and_libraries/linux/mkl/lib/intel64:/usr/local/packages/gcc/9.3.0/5jmpgadg/lib64:${LD_LIBRARY_PATH}
 export MPI_NODEFILE=mpi_nodefile
 env > SIMFACTORY/ENVIRONMENT
 
 echo "Starting:"
 uniq ${PBS_NODEFILE} > ${MPD_NODEFILE}
 for node in $(cat ${MPD_NODEFILE}); do
-    for ((proc=0; $proc<@(@PPN_USED@/@NUM_THREADS@)@; proc=$proc+1)); do
+    for ((proc=0; $proc<@(@PPN_USED@//@NUM_THREADS@)@; proc=$proc+1)); do
         echo ${node}
     done
 done > ${MPI_NODEFILE}
@@ -37,7 +36,6 @@ export CACTUS_STARTTIME=$(date +%s)
 if [ @RUNDEBUG@ -eq 0 ]; then
     time ${MPICHDIR}/bin/mpirun -n @NUM_PROCS@ -hostfile ${MPI_NODEFILE} -mca I_MPI_OFA_USE_XRC 1 -mca coll_fca_enable 0 /bin/env MV2_ENABLE_AFFINITY=0 OMP_NUM_THREADS=@NUM_THREADS@ @EXECUTABLE@ -L 3 @PARFILE@
 else
-	MPICHDIR=/usr/local/packages/openmpi/1.8.4/INTEL-14.0.2
 	export MV2_ENABLE_AFFINIT=0
 	export OMP_NUM_THREADS=@NUM_THREADS@
 	eval `soft-dec sh add +totalview-8.10.1`
